@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Сервис обновлений 1С:Предприятие</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: #ffcc00;
+            border-bottom: 3px solid #e6b800;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .header-logo {
+            width: 48px;
+            height: 48px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-size: 12px;
+            color: #555;
+        }
+
+        .nav {
+            background-color: #333;
+            padding: 0 24px;
+        }
+
+        .nav ul {
+            list-style: none;
+            display: flex;
+            gap: 0;
+        }
+
+        .nav ul li a {
+            display: block;
+            padding: 9px 16px;
+            color: #ccc;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .nav ul li a:hover {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .breadcrumb {
+            background: #fff;
+            border-bottom: 1px solid #ddd;
+            padding: 8px 24px;
+            font-size: 12px;
+            color: #777;
+        }
+
+        .breadcrumb a { color: #1a6bb5; text-decoration: none; }
+        .breadcrumb a:hover { text-decoration: underline; }
+
+        .main {
+            max-width: 900px;
+            margin: 24px auto;
+            padding: 0 24px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            padding: 28px 32px;
+        }
+
+        .error-code {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .error-icon {
+            width: 52px;
+            height: 52px;
+            background: #d9534f;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .error-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+
+        .error-heading {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .error-sub {
+            font-size: 13px;
+            color: #777;
+        }
+
+        .info-block {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-left: 4px solid #ffcc00;
+            border-radius: 2px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 13px;
+            line-height: 1.7;
+            color: #444;
+        }
+
+        .info-block p { margin-bottom: 6px; }
+        .info-block p:last-child { margin-bottom: 0; }
+
+        .detail-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-bottom: 24px;
+        }
+
+        .detail-table tr:nth-child(even) { background: #f9f9f9; }
+
+        .detail-table td {
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .detail-table td:first-child {
+            width: 220px;
+            color: #666;
+            font-weight: bold;
+            background: #f4f4f4;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 3px;
+            font-size: 13px;
+            cursor: pointer;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: #ffcc00;
+            border-color: #e6b800;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover { background: #e6b800; }
+
+        .btn-secondary {
+            background: #fff;
+            border-color: #aaa;
+            color: #444;
+        }
+
+        .btn-secondary:hover { background: #f0f0f0; }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+            color: #aaa;
+            border-top: 1px solid #ddd;
+            margin-top: 40px;
+            background: #fafafa;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d9534f;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <svg class="header-logo" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="4" fill="#fff"/>
+        <text x="5" y="36" font-size="34" font-family="Arial" font-weight="bold" fill="#e60000">1C</text>
+    </svg>
+    <div>
+        <div class="header-title">1С:Предприятие — Сервис обновлений</div>
+        <div class="header-subtitle">Портал технической поддержки и дистрибуции обновлений</div>
+    </div>
+</div>
+
+<div class="nav">
+    <ul>
+        <li><a href="#">Главная</a></li>
+        <li><a href="#">Обновления</a></li>
+        <li><a href="#">Документация</a></li>
+        <li><a href="#">Поддержка</a></li>
+        <li><a href="#">Статус сервиса</a></li>
+    </ul>
+</div>
+
+<div class="breadcrumb">
+    <a href="#">Главная</a> &rsaquo; <a href="#">Обновления</a> &rsaquo; Ошибка запроса
+</div>
+
+<div class="main">
+    <div class="card">
+        <div class="error-code">
+            <div class="error-icon">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+            </div>
+            <div>
+                <div class="error-heading">Ресурс недоступен (HTTP 404)</div>
+                <div class="error-sub"><span class="status-dot"></span>Запрошенный адрес не найден на сервере обновлений</div>
+            </div>
+        </div>
+
+        <div class="info-block">
+            <p>Сервер обновлений <strong>1С:Предприятие</strong> не смог обработать ваш запрос.</p>
+            <p>Возможные причины: указан устаревший адрес пакета обновления, ресурс временно перемещён или удалён, либо у вас нет прав доступа к данному разделу.</p>
+            <p>Если вы перешли по ссылке из письма или документации — убедитесь, что используете актуальную версию сервиса обновлений.</p>
+        </div>
+
+        <div class="section-title">Сведения об ошибке</div>
+        <table class="detail-table">
+            <tr>
+                <td>Код ошибки</td>
+                <td>404 Not Found</td>
+            </tr>
+            <tr>
+                <td>Компонент</td>
+                <td>Сервер дистрибуции обновлений 1С</td>
+            </tr>
+            <tr>
+                <td>Время запроса</td>
+                <td id="req-time"></td>
+            </tr>
+            <tr>
+                <td>Рекомендация</td>
+                <td>Проверьте настройки сервиса обновлений в конфигураторе 1С или обратитесь к администратору</td>
+            </tr>
+        </table>
+
+        <div class="section-title">Действия</div>
+        <div class="btn-group">
+            <a href="#" class="btn btn-primary" onclick="history.back(); return false;">&#8592; Назад</a>
+            <a href="#" class="btn btn-secondary">Главная страница сервиса</a>
+            <a href="#" class="btn btn-secondary">Обратиться в поддержку</a>
+        </div>
+    </div>
+</div>
+
+<div class="footer">
+    &copy; 2025 АО «1С». Все права защищены.&nbsp;&nbsp;|&nbsp;&nbsp;Сервис обновлений 1С:Предприятие&nbsp;&nbsp;|&nbsp;&nbsp;support@1c.ru
+</div>
+
+<script>
+    document.getElementById('req-time').textContent = new Date().toLocaleString('ru-RU', {
+        day: '2-digit', month: '2-digit', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+</script>
+
+</body>
+</html>
