@@ -201,7 +201,7 @@ echo "[+] Launching Adaptix Server..."\n\
 exec "$@"' > /app/entrypoint.sh && \
     chmod +x /app/entrypoint.sh
 
-EXPOSE 4321 80 443 8080 8443 8000 8888 50050-50055 9000-9002 7000-7010
+EXPOSE 8443 80 443 8080 8000 8888 50050-50055 9000-9002 7000-7010
 
 ENTRYPOINT ["/app/entrypoint.sh"]
 CMD ["/app/adaptixserver", "-profile", "/app/profile.yaml"]
